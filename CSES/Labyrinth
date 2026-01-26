@@ -54,6 +54,4 @@ int main() {
     }reverse(path.begin(),path.end());
     cout<<path.size()<<endl;
     cout<<path<<endl;
- 
- 
 }
