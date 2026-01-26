@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+    int n,m;
+    cin>>n>>m;
+    vector<vector<char>> grid(n,vector<char>(m));
+    for(int i=0;i<n;i++) {
+        for(int j=0;j<m;j++) {
+            cin>>grid[i][j];
+        }
+    }
+    int sr,sc,er,ec;
+    for (int i=0;i<n;i++) {
+        for (int j=0;j<m;j++) {
+            if (grid[i][j]=='A') {
+                sr=i;sc=j;
+            }else if (grid[i][j]=='B') {
+                er=i;ec=j;
+            }
+        }
+    }
+    vector<vector<char>> par(n,vector<char>(m));
+    int dr[]={-1,1,0,0},dc[]={0,0,-1,1};
+    char dir[]={'U','D','L','R'};
+    vector<vector<bool>> vis(n,vector<bool>(m, false));
+    queue<pair<int,int>> q;
+    q.push({sr,sc});
+    vis[sr][sc]=true;
+    while (!q.empty()) {
+        auto [r,c]=q.front();
+        q.pop();
+        for (int i=0;i<4;i++) {
+            int nr=r+dr[i], nc=c+dc[i];
+            if (nr>=0 && nr<n && nc>=0 && nc<m && vis[nr][nc]==false && grid[nr][nc]!='#') {
+                vis[nr][nc]=true;
+                par[nr][nc]=dir[i];
+                q.push({nr,nc});
+            }
+        }
+    }
+    if (!vis[er][ec]) {
+        cout<<"NO"<<endl;
+        return 0;
+    }
+    cout<<"YES"<<endl;
+    int cr=er,cc=ec;
+    string path="";
+    while (cr!=sr || cc!=sc) {
+        path+=par[cr][cc];
+        if (par[cr][cc]=='U') cr++;
+        else if (par[cr][cc]=='D') cr--;
+        else if (par[cr][cc]=='L') cc++;
+        else if (par[cr][cc]=='R') cc--;
+    }reverse(path.begin(),path.end());
+    cout<<path.size()<<endl;
+    cout<<path<<endl;
+ 
+ 
+}
