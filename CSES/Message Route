@@ -1,1 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+    int n,m;
+    cin>>n>>m;
+    vector<vector<int>> adj(n+1);
+    for (int i=0;i<m;i++) {
+        int a,b;
+        cin>>a>>b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+    vector<bool> vis(n+1,false);
+    vector<int> par(n+1,-1);
+    queue<int> q;
+    q.push(1);
+    vis[1]=true;
+    while (!q.empty()) {
+        int u=q.front();
+        q.pop();
+        for (int i=0;i<adj[u].size();i++) {
+            int v=adj[u][i];
+            if (vis[v]==false) {
+                par[v]=u;
+                vis[v]=true;
+                q.push(v);
+            }
+        }
+    }
+    if(!vis[n]) {
+        cout<<"IMPOSSIBLE"<<endl;
+        return 0;
+    }
+    vector<int> path;
+    int curr=n;
+    while (curr!=-1) {
+        path.push_back(curr);
+        curr=par[curr];
+    }
+    reverse(path.begin(),path.end());
+    cout<<path.size()<<endl;
+    for (int i=0;i<path.size();i++) {
+        cout<<path[i]<<" ";
+    }
+    cout<<endl;
+ 
+}
 
