@@ -1,1 +1,47 @@
-
+class Solution {
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        int m=board.size(),n=board[0].size(),r=click[0],c=click[1];
+        if(board[r][c]=='M') {
+            board[r][c]='X';
+            return board;
+        }
+        queue<pair<int,int>> q;
+        q.push({r,c});
+        int dr[]={-1,1,0,0,-1,-1,1,1};
+        int dc[]={0,0,-1,1,-1,1,-1,1};
+        while(!q.empty()) {
+            auto [row,col]=q.front();
+            q.pop();
+            int mines=countmines(board,row,col);
+            if(mines>0){
+                board[row][col]='0'+mines;
+            }else{
+                board[row][col]='B';
+                for(int i=0;i<8;i++) {
+                    int nr=row+dr[i];
+                    int nc=col+dc[i];
+                    if(nr>=0 && nr<m && nc>=0 && nc<n && board[nr][nc]=='E') {
+                        board[nr][nc]='B';
+                        q.push({nr, nc});
+                    }
+                }
+            }
+        }
+        return board;
+    } 
+private:
+    int countmines(vector<vector<char>>& board, int r, int c) {
+        int m=board.size(), n=board[0].size(), count=0;
+        int dr[]={-1,1,0,0,-1,-1,1,1};
+        int dc[]={0,0,-1,1,-1,1,-1,1};
+        for(int i=0;i<8;i++){
+            int nr=r+dr[i];
+            int nc=c+dc[i];
+            if(nr>=0 && nr<m && nc>=0 && nc<n && board[nr][nc]=='M') {
+                count++;
+            }
+        }
+        return count;
+    }
+};
