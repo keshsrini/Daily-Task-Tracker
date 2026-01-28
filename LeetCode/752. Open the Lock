@@ -1,1 +1,33 @@
-
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        unordered_set<string> s(deadends.begin(),deadends.end());
+        if(s.count("0000")){
+            return -1;
+        }
+        queue<pair<string,int>> q;
+        q.push({"0000", 0});
+        unordered_set<string> vis;
+        vis.insert("0000");
+        while(!q.empty()){
+            auto curr=q.front();
+            q.pop();
+            string comb=curr.first;
+            int m=curr.second;
+            if(comb==target){
+                return m;
+            }
+            for(int i=0;i<4;i++){
+                for(int d:{-1,1}){
+                    int dig=(comb[i]-'0'+d+10)%10;
+                    string n=comb;
+                    n[i]='0'+dig;
+                    if(vis.find(n)==vis.end() && s.find(n)==s.end()){
+                        vis.insert(n);
+                        q.push({n,m+1});
+                    }
+                }
+            }
+        }return -1;
+    }
+};
